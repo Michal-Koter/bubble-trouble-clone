@@ -29,11 +29,9 @@ public:
 
     bool running() { return isRunning; }
 
-    std::shared_ptr<SDL_Texture> loadImage(const std::string &file_name);
-
 private:
-    double dt;
-    double game_time;
+//    double dt;
+    int game_time;
     bool isRunning;
     SDL_Window *window;
     SDL_Renderer *renderer;

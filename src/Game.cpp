@@ -3,6 +3,7 @@
 //
 
 #include "Game.h"
+#include "TextureManager.h"
 
 std::shared_ptr<SDL_Texture> playerTexture;
 std::shared_ptr<SDL_Texture> backgroundTexture;
@@ -10,8 +11,8 @@ std::shared_ptr<SDL_Texture> backgroundTexture;
 SDL_Rect srcR, destR;
 
 Game::Game() {
-    dt = 1./60.;
-    game_time = 0.;
+//    dt = 1./60.;
+    game_time = 0;
 }
 
 Game::~Game() {}
@@ -28,8 +29,8 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height) {
         isRunning = false;
     }
 
-    playerTexture = loadImage("assets/player.bmp");
-    backgroundTexture = loadImage("assets/background.bmp");
+    playerTexture = TextureManager::LoadTexture("assets/player.bmp", renderer);
+    backgroundTexture = TextureManager::LoadTexture("assets/background.bmp", renderer);
 }
 
 void Game::handleEvents() {
@@ -49,7 +50,8 @@ void Game::handleEvents() {
 }
 
 void Game::update() {
-    game_time += dt;
+//    game_time += dt;
+    game_time++;
 
     destR.h = 64;
     destR.w = 32;
@@ -71,23 +73,4 @@ void Game::clear() {
     SDL_Quit();
 }
 
-std::shared_ptr<SDL_Texture> Game::loadImage(const std::string &file_name) {
-    SDL_Surface *surface;
-    SDL_Texture *texture;
-    surface = SDL_LoadBMP(file_name.c_str());
-    if (!surface) {
-        SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Couldn't create surface from image: %s", SDL_GetError());
-        throw std::invalid_argument(SDL_GetError());
-    }
-    SDL_SetColorKey(surface, SDL_TRUE, SDL_MapRGB(surface->format,255, 0, 255));
-    texture = SDL_CreateTextureFromSurface(renderer, surface);
-    if (!texture) {
-        SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Couldn't create texture from surface: %s", SDL_GetError());
-        throw std::invalid_argument(SDL_GetError());
-    }
-    SDL_FreeSurface(surface);
-    return {texture, [](SDL_Texture *t) {
-        SDL_DestroyTexture(t);
-    }};
-}
 
