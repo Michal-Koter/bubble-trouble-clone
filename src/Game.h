@@ -5,7 +5,7 @@
 #ifndef MYGAME_GAME_H
 #define MYGAME_GAME_H
 
-#include <SDL.h>
+#include "SDL2/SDL.h"
 #include <stdio.h>
 
 class Game {
