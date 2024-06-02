@@ -6,7 +6,9 @@
 #define MYGAME_GAME_H
 
 #include "SDL2/SDL.h"
-#include <stdio.h>
+#include <cstdio>
+#include <memory>
+#include <stdexcept>
 
 class Game {
 
@@ -26,6 +28,8 @@ public:
     void clear();
 
     bool running() { return isRunning; }
+
+    std::shared_ptr<SDL_Texture> loadImage(const std::string &file_name);
 
 private:
     double dt;
