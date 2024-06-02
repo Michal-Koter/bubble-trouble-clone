@@ -4,10 +4,13 @@
 
 #include "Game.h"
 #include "GameObject.h"
+#include "Map.h"
 
+std::shared_ptr<SDL_Texture> background;
 GameObject *player;
+Map *map;
 
-SDL_Rect srcR, destR;
+SDL_Renderer* Game::renderer = nullptr;
 
 Game::Game() {
 //    dt = 1./60.;
@@ -28,7 +31,8 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height) {
         isRunning = false;
     }
 
-    player = new GameObject("assets/player.bmp", renderer, 450, 300);
+    player = new GameObject("assets/player.bmp", 450, 300);
+    map = new Map();
 }
 
 void Game::handleEvents() {
@@ -55,7 +59,9 @@ void Game::update() {
 }
 
 void Game::render() {
+    SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0x00);
     SDL_RenderClear(renderer);
+    map->DrawMap();
 
     player->Render();
 

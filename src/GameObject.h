@@ -14,7 +14,7 @@ struct vect {
 
 class GameObject {
 public:
-    GameObject(const std::string &texturesheet, SDL_Renderer *ren, int x, int y);
+    GameObject(const std::string &texturesheet, int x, int y);
 
     ~GameObject();
 
@@ -25,7 +25,6 @@ private:
     vect pos;
     std::shared_ptr<SDL_Texture> objTexture;
     SDL_Rect srcRect, destRect;
-    SDL_Renderer *renderer;
 };
 
 

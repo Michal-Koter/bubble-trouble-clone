@@ -21,7 +21,9 @@ add_executable(mygame WIN32 src/main.cpp
         src/TextureManager.cpp
         src/TextureManager.h
         src/GameObject.cpp
-        src/GameObject.h)
+        src/GameObject.h
+        src/Map.cpp
+        src/Map.h)
 
 # SDL2::SDL2main may or may not be available. It is e.g. required by Windows GUI applications
 if(TARGET SDL2::SDL2main)

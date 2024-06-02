@@ -15,13 +15,13 @@ int main(int argc, char *argv[])
     using namespace std;
 
     const int FPS = 60;
-    const int frameDelay = 1000 / FPS;
+    const int frameDelay = 1000 / FPS; // dt
 
     Uint32 frameStart;
     int frameTime;
 
     game = new Game();
-    game->init("My game", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 900, 500);
+    game->init("My game", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 640);
 
     while (game->running()) {
         frameStart = SDL_GetTicks();
