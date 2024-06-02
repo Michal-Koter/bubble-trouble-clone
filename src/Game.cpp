@@ -3,10 +3,9 @@
 //
 
 #include "Game.h"
-#include "TextureManager.h"
+#include "GameObject.h"
 
-std::shared_ptr<SDL_Texture> playerTexture;
-std::shared_ptr<SDL_Texture> backgroundTexture;
+GameObject *player;
 
 SDL_Rect srcR, destR;
 
@@ -29,8 +28,7 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height) {
         isRunning = false;
     }
 
-    playerTexture = TextureManager::LoadTexture("assets/player.bmp", renderer);
-    backgroundTexture = TextureManager::LoadTexture("assets/background.bmp", renderer);
+    player = new GameObject("assets/player.bmp", renderer, 450, 300);
 }
 
 void Game::handleEvents() {
@@ -53,16 +51,13 @@ void Game::update() {
 //    game_time += dt;
     game_time++;
 
-    destR.h = 64;
-    destR.w = 32;
-    destR.x = game_time;
+    player->Update();
 }
 
 void Game::render() {
     SDL_RenderClear(renderer);
 
-    SDL_RenderCopy(renderer, backgroundTexture.get(), NULL, NULL);
-    SDL_RenderCopy(renderer, playerTexture.get(), NULL, &destR);
+    player->Render();
 
     SDL_RenderPresent(renderer);
 }
