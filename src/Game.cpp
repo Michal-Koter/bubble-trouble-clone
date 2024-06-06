@@ -5,12 +5,17 @@
 #include "Game.h"
 #include "GameObject.h"
 #include "Map.h"
+#include "ECS.h"
+#include "Components.h"
 
 std::shared_ptr<SDL_Texture> background;
 GameObject *player;
 Map *map;
 
 SDL_Renderer* Game::renderer = nullptr;
+
+Manager manager;
+auto& newPlayer(manager.addEntity());
 
 Game::Game() {
 //    dt = 1./60.;
@@ -33,6 +38,8 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height) {
 
     player = new GameObject("assets/player.bmp", 450, 300);
     map = new Map();
+
+    newPlayer.addComponent<PositionComponent>();
 }
 
 void Game::handleEvents() {
@@ -56,6 +63,7 @@ void Game::update() {
     game_time++;
 
     player->Update();
+    manager.update();
 }
 
 void Game::render() {
