@@ -3,19 +3,16 @@
 //
 
 #include "Game.h"
-#include "GameObject.h"
 #include "Map.h"
-#include "ECS.h"
-#include "Components.h"
+#include "ECS/Components.h"
 
 std::shared_ptr<SDL_Texture> background;
-GameObject *player;
 Map *map;
 
 SDL_Renderer* Game::renderer = nullptr;
 
 Manager manager;
-auto& newPlayer(manager.addEntity());
+auto& player(manager.addEntity());
 
 Game::Game() {
 //    dt = 1./60.;
@@ -36,10 +33,11 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height) {
         isRunning = false;
     }
 
-    player = new GameObject("assets/player.bmp", 450, 300);
     map = new Map();
 
-    newPlayer.addComponent<PositionComponent>();
+    player.addComponent<PositionComponent>(500, 100); // setting the start position using constructor doesn't work. Why? IDK!
+    player.getComponent<PositionComponent>().setPos(500,100);
+    player.addComponent<SpriteComponent>("assets/player.bmp");
 }
 
 void Game::handleEvents() {
@@ -61,8 +59,7 @@ void Game::handleEvents() {
 void Game::update() {
 //    game_time += dt;
     game_time++;
-
-    player->Update();
+    manager.refresh();
     manager.update();
 }
 
@@ -71,8 +68,7 @@ void Game::render() {
     SDL_RenderClear(renderer);
     map->DrawMap();
 
-    player->Render();
-
+    manager.draw();
     SDL_RenderPresent(renderer);
 }
 

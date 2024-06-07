@@ -1,14 +1,23 @@
 //
-// Created by koter on 06.06.2024.
+// Created by koter on 07.06.2024.
 //
 
-#ifndef MYGAME_COMPONENTS_H
-#define MYGAME_COMPONENTS_H
+#ifndef MYGAME_POSITIONCOMPNENT_H
+#define MYGAME_POSITIONCOMPNENT_H
 
-#include "ECS.h"
+#include "Components.h"
 
 class PositionComponent : public Component {
 public:
+    PositionComponent() {
+        xpos = 0;
+        ypos = 0;
+    }
+
+    PositionComponent(int x, int y) {
+        setPos(x, y);
+    }
+
     int x() { return xpos; }
     int y() { return ypos; }
 
@@ -22,8 +31,6 @@ public:
         ypos++;
     }
 
-
-
     void setPos(int x, int y) {
         xpos = x;
         ypos = y;
@@ -35,4 +42,4 @@ private:
 
 };
 
-#endif //MYGAME_COMPONENTS_H
+#endif //MYGAME_POSITIONCOMPNENT_H
