@@ -5,6 +5,7 @@
 #include "Game.h"
 #include "Map.h"
 #include "ECS/Components.h"
+#include "Vector2D.h"
 
 std::shared_ptr<SDL_Texture> background;
 Map *map;
@@ -14,10 +15,7 @@ SDL_Renderer* Game::renderer = nullptr;
 Manager manager;
 auto& player(manager.addEntity());
 
-Game::Game() {
-//    dt = 1./60.;
-    game_time = 0;
-}
+Game::Game() {}
 
 Game::~Game() {}
 
@@ -35,8 +33,8 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height) {
 
     map = new Map();
 
-    player.addComponent<PositionComponent>(500, 100); // setting the start position using constructor doesn't work. Why? IDK!
-    player.getComponent<PositionComponent>().setPos(500,100);
+    player.addComponent<TransformComponent>(); // setting the start position using constructor doesn't work. Why? IDK!
+    player.getComponent<TransformComponent>().setPos(500, 100);
     player.addComponent<SpriteComponent>("assets/player.bmp");
 }
 
@@ -57,10 +55,10 @@ void Game::handleEvents() {
 }
 
 void Game::update() {
-//    game_time += dt;
-    game_time++;
     manager.refresh();
     manager.update();
+    player.getComponent<TransformComponent>().position.Add(Vector2D(5,0));
+//    std::cout << player.getComponent<TransformComponent>() << std::endl;
 }
 
 void Game::render() {

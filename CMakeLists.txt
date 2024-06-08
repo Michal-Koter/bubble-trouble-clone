@@ -27,7 +27,9 @@ add_executable(mygame WIN32 src/main.cpp
         src/ECS/ECS.h
         src/ECS/Components.h
         src/ECS/SpriteComponent.h
-        src/ECS/PositionCompnent.h)
+        src/ECS/TransformComponent.h
+        src/Vector2D.cpp
+        src/Vector2D.h)
 
 # SDL2::SDL2main may or may not be available. It is e.g. required by Windows GUI applications
 if(TARGET SDL2::SDL2main)

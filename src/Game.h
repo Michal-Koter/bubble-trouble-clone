@@ -32,8 +32,6 @@ public:
     static SDL_Renderer *renderer;
 
 private:
-//    double dt;
-    int game_time;
     bool isRunning;
     SDL_Window *window;
 

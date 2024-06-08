@@ -21,15 +21,15 @@ public:
     }
 
     void init() override {
-        position = &entity->getComponent<PositionComponent>();
+        transform = &entity->getComponent<TransformComponent>();
 
         srcRect = {0, 0, 32, 64};
         destRec = {0, 0, 32, 64};
     }
 
     void update() override {
-        destRec.x = position->x();
-        destRec.y = position->y();
+        destRec.x = (int)transform->position.x;
+        destRec.y = (int)transform->position.y;
     }
 
     void draw() override {
@@ -37,7 +37,7 @@ public:
     }
 
 private:
-    PositionComponent *position;
+    TransformComponent *transform;
     std::shared_ptr<SDL_Texture> texture;
     SDL_Rect srcRect, destRec;
 };
