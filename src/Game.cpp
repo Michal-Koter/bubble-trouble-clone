@@ -9,11 +9,11 @@
 
 std::shared_ptr<SDL_Texture> background;
 Map *map;
-
-SDL_Renderer* Game::renderer = nullptr;
+SDL_Renderer *Game::renderer = nullptr;
+SDL_Event Game::event;
 
 Manager manager;
-auto& player(manager.addEntity());
+auto &player(manager.addEntity());
 
 Game::Game() {}
 
@@ -24,7 +24,7 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height) {
         window = SDL_CreateWindow(title, xpos, ypos, width, height, 0);
         renderer = SDL_CreateRenderer(window, -1, 0);
         if (renderer) {
-            SDL_SetRenderDrawColor(renderer, 255,0,255,255);
+            SDL_SetRenderDrawColor(renderer, 255, 0, 255, 255);
         }
         isRunning = true;
     } else {
@@ -34,30 +34,28 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height) {
     map = new Map();
 
     player.addComponent<TransformComponent>(); // setting the start position using constructor doesn't work. Why? IDK!
-    player.getComponent<TransformComponent>().setPos(500, 100);
+//    player.getComponent<TransformComponent>().setPos(500, 100);
     player.addComponent<SpriteComponent>("assets/player.bmp");
+    player.addComponent<KeyboardController>();
 }
 
 void Game::handleEvents() {
-    SDL_Event event;
-    while (SDL_PollEvent(&event)) {
-        switch (event.type) {
-            case SDL_QUIT:
-                isRunning = false;
-                break;
-            case SDL_KEYUP:
-                if (event.key.keysym.scancode == SDL_SCANCODE_Q) isRunning = false;
-                break;
-            case SDL_KEYDOWN:
-                break;
-        }
+
+    SDL_PollEvent(&event);
+    switch (event.type) {
+        case SDL_QUIT:
+            isRunning = false;
+            break;
+        default:
+            break;
     }
+
 }
 
 void Game::update() {
     manager.refresh();
     manager.update();
-    player.getComponent<TransformComponent>().position.Add(Vector2D(5,0));
+//    player.getComponent<TransformComponent>().position.Add(Vector2D(5,0));
 //    std::cout << player.getComponent<TransformComponent>() << std::endl;
 }
 
