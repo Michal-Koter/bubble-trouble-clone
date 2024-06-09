@@ -23,13 +23,15 @@ public:
     void init() override {
         transform = &entity->getComponent<TransformComponent>();
 
-        srcRect = {0, 0, 32, 64};
-        destRec = {0, 0, 32, 64};
+        srcRect = {0, 0, transform->width, transform->height};
+        destRec = {0, 0, transform->width * transform->scale, transform->height * transform->scale};
     }
 
     void update() override {
         destRec.x = (int)transform->position.x;
         destRec.y = (int)transform->position.y;
+        destRec.w = transform->width * transform->scale;
+        destRec.h = transform->height * transform->scale;
     }
 
     void draw() override {

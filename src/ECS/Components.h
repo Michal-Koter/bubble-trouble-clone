@@ -9,5 +9,6 @@
 #include "TransformComponent.h"
 #include "SpriteComponent.h"
 #include "KeyboardController.h"
+#include "ColliderComponent.h"
 
 #endif //MYGAME_COMPONENTS_H
