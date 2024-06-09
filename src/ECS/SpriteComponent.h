@@ -28,8 +28,8 @@ public:
     }
 
     void update() override {
-        destRec.x = (int)transform->position.x;
-        destRec.y = (int)transform->position.y;
+        destRec.x = static_cast<int>(transform->position.x);
+        destRec.y = static_cast<int>(transform->position.y);
         destRec.w = transform->width * transform->scale;
         destRec.h = transform->height * transform->scale;
     }

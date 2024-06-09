@@ -20,21 +20,17 @@ public:
     int speed = 3;
 
     TransformComponent() {
-        position.x = 0;
-        position.y = 0;
-        init();
+        position.Zero();
     }
 
     TransformComponent(int sc) {
-        position.x = 0.;
-        position.y = 0.;
+        position.Zero();
         scale = sc;
     }
 
     TransformComponent(double x, double y) {
         position.x = x;
         position.y = y;
-        init();
     }
 
     TransformComponent(double x, double y, int h, int w, int sc) {
@@ -46,8 +42,7 @@ public:
     }
 
     void init() override {
-        velocity.x = 0;
-        velocity.y = 0;
+        velocity.Zero();
     }
 
     void update() override {

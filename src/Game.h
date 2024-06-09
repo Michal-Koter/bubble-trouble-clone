@@ -9,6 +9,9 @@
 #include <cstdio>
 #include <memory>
 #include <stdexcept>
+#include <vector>
+
+class ColliderComponent;
 
 class Game {
 
@@ -31,6 +34,7 @@ public:
 
     static SDL_Renderer *renderer;
     static SDL_Event event;
+    static std::vector<ColliderComponent*> colliders;
 
 private:
     bool isRunning;
