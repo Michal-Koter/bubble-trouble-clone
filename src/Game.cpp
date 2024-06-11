@@ -8,7 +8,7 @@
 #include "Vector2D.h"
 #include "Collision.h"
 
-std::shared_ptr<SDL_Texture> background;
+//std::shared_ptr<SDL_Texture> background;
 Map *map;
 SDL_Renderer *Game::renderer = nullptr;
 SDL_Event Game::event;
@@ -16,10 +16,10 @@ SDL_Event Game::event;
 std::vector<ColliderComponent*> Game::colliders;
 
 Manager manager;
+auto &background(manager.addEntity());
 auto &player(manager.addEntity());
 auto &wall(manager.addEntity());
-auto& tile0(manager.addEntity());
-auto& tile1(manager.addEntity());
+
 Game::Game() {}
 
 Game::~Game() {}
@@ -36,11 +36,11 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height) {
         isRunning = false;
     }
 
-    map = new Map();
+//    map = new Map();
+    background.addComponent<TransformComponent>(0, 0, height, width, 1);
+    background.addComponent<SpriteComponent>("assets/background.bmp");
 
-    tile0.addComponent<TileComponent>(200,200,32,32,0);
-    tile1.addComponent<TileComponent>(250,250,32,32,0);
-    tile1.addComponent<ColliderComponent>("dirt");
+    Map::LoadMap("assets/basic.map", 25, 20);
 
     player.addComponent<TransformComponent>(); // setting the start position using constructor doesn't work. Why? IDK!
     player.getComponent<TransformComponent>().setPos(100, 100);
@@ -84,7 +84,7 @@ void Game::update() {
 void Game::render() {
     SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0x00);
     SDL_RenderClear(renderer);
-    map->DrawMap();
+//    map->DrawMap();
 
     manager.draw();
     SDL_RenderPresent(renderer);
@@ -96,4 +96,9 @@ void Game::clear() {
     SDL_Quit();
 }
 
-
+void Game::AddTile(int id, int x, int y) {
+    auto& tile(manager.addEntity());
+    
+    tile.addComponent<TileComponent>(x,y,32,32,id);
+    tile.addComponent<ColliderComponent>("dirt");
+}

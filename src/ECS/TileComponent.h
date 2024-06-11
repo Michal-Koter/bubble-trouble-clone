@@ -24,12 +24,13 @@ public:
         tileID = id;
 
         switch (tileID) {
-            case 0:
+            case 1:
                 path = "assets/tiles.bmp";
                 break;
             default:
+                path = "assets/background.bmp";
                 break;
-        }    
+        }
     }
     
     void init() override {

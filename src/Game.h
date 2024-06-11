@@ -32,6 +32,7 @@ public:
 
     bool running() { return isRunning; }
 
+    static void AddTile(int id, int x, int y);
     static SDL_Renderer *renderer;
     static SDL_Event event;
     static std::vector<ColliderComponent*> colliders;
@@ -39,7 +40,6 @@ public:
 private:
     bool isRunning;
     SDL_Window *window;
-
 };
 
 
