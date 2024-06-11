@@ -9,6 +9,9 @@
 #include <cstdio>
 #include <memory>
 #include <stdexcept>
+#include <vector>
+
+class ColliderComponent;
 
 class Game {
 
@@ -30,10 +33,10 @@ public:
     bool running() { return isRunning; }
 
     static SDL_Renderer *renderer;
+    static SDL_Event event;
+    static std::vector<ColliderComponent*> colliders;
 
 private:
-//    double dt;
-    int game_time;
     bool isRunning;
     SDL_Window *window;
 
