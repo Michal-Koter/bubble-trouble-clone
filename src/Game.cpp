@@ -8,7 +8,7 @@
 #include "Vector2D.h"
 #include "Collision.h"
 
-std::shared_ptr<SDL_Texture> background;
+//std::shared_ptr<SDL_Texture> background;
 Map *map;
 SDL_Renderer *Game::renderer = nullptr;
 SDL_Event Game::event;
@@ -16,10 +16,17 @@ SDL_Event Game::event;
 std::vector<ColliderComponent*> Game::colliders;
 
 Manager manager;
+auto &background(manager.addEntity());
 auto &player(manager.addEntity());
 auto &wall(manager.addEntity());
-auto& tile0(manager.addEntity());
-auto& tile1(manager.addEntity());
+
+enum groupLabels : std::size_t {
+    GROUP_MAP,
+    GROUP_PLAYERS,
+    GROUP_BALLS,
+    GROUP_COLLIDERS
+};
+
 Game::Game() {}
 
 Game::~Game() {}
@@ -36,21 +43,24 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height) {
         isRunning = false;
     }
 
-    map = new Map();
+//    map = new Map();
+    background.addComponent<TransformComponent>(0, 0, height, width, 1);
+    background.addComponent<SpriteComponent>("assets/background.bmp");
+    background.addGroup(GROUP_MAP);
 
-    tile0.addComponent<TileComponent>(200,200,32,32,0);
-    tile1.addComponent<TileComponent>(250,250,32,32,0);
-    tile1.addComponent<ColliderComponent>("dirt");
+    Map::LoadMap("assets/basic.map", 25, 20);
 
     player.addComponent<TransformComponent>(); // setting the start position using constructor doesn't work. Why? IDK!
     player.getComponent<TransformComponent>().setPos(100, 100);
     player.addComponent<SpriteComponent>("assets/player.bmp");
     player.addComponent<KeyboardController>();
     player.addComponent<ColliderComponent>("player");
+    player.addGroup(GROUP_PLAYERS);
 
     wall.addComponent<TransformComponent>(350., 100., 300, 400, 1);
     wall.addComponent<SpriteComponent>("assets/spear.bmp");
     wall.addComponent<ColliderComponent>("spear");
+    wall.addGroup(GROUP_MAP); //change in the future
 }
 
 void Game::handleEvents() {
@@ -81,12 +91,24 @@ void Game::update() {
     }
 }
 
+auto& tiles(manager.getGroup(GROUP_MAP));
+auto& players(manager.getGroup(GROUP_PLAYERS));
+auto& balls(manager.getGroup(GROUP_BALLS));
+auto& colliders(manager.getGroup(GROUP_COLLIDERS));
+std::vector<Entity*>* collection[4] = {&tiles, &players, &balls, &colliders};
+
 void Game::render() {
     SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0x00);
     SDL_RenderClear(renderer);
-    map->DrawMap();
 
-    manager.draw();
+//    for (auto& t: tiles) {
+//        t->draw();
+//    }
+    for (auto& vec : collection) {
+        for (auto& entity: *vec) {
+            entity->draw();
+        }
+    }
     SDL_RenderPresent(renderer);
 }
 
@@ -96,4 +118,10 @@ void Game::clear() {
     SDL_Quit();
 }
 
-
+void Game::AddTile(int id, int x, int y) {
+    auto& tile(manager.addEntity());
+    
+    tile.addComponent<TileComponent>(x,y,32,32,id);
+    tile.addComponent<ColliderComponent>("dirt");
+    tile.addGroup(GROUP_MAP);
+}
