@@ -76,6 +76,13 @@ Vector2D& Vector2D::operator*(const int& i) {
     return *this;
 }
 
+Vector2D& Vector2D::operator*(const double& d) {
+    this->x *= d;
+    this->y *= d;
+
+    return *this;
+}
+
 Vector2D& Vector2D::Zero() {
     this->x = 0;
     this->y = 0;

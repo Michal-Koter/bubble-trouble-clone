@@ -19,16 +19,16 @@ public:
         if(Game::event.type == SDL_KEYDOWN) {
             switch (Game::event.key.keysym.sym) {
                 case SDLK_LEFT:
-                    transform->velocity.x = -1;
+                    transform->velocity.x = -70;
                     break;
                 case SDLK_RIGHT:
-                    transform->velocity.x = 1;
+                    transform->velocity.x = 70;
                     break;
                 case SDLK_UP:
-                    transform->velocity.y = -1;
+                    transform->velocity.y = -70;
                     break;
                 case SDLK_DOWN:
-                    transform->velocity.y = 1;
+                    transform->velocity.y = 70;
                     break;
                 default:
                     break;

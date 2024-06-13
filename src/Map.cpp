@@ -33,11 +33,15 @@
 //};
 
 Map::Map() {
-    backgroundTexture = TextureManager::LoadTexture("assets/background.bmp");
+    backgroundTexture = TextureManager::LoadTexture("assets/bg_v2.bmp");
     
 }
 
 Map::~Map() {}
+
+void Map::loadMap() {
+    TextureManager::Draw(backgroundTexture.get());
+}
 
 void Map::LoadMap(const std::string& path, int sizeX, int sizeY) {
     char tile;
