@@ -19,6 +19,6 @@ public:
     static bool XFrameCollision(const ColliderComponent& col);
     static bool Flor(const ColliderComponent& col);
     static bool Ceiling(const ColliderComponent& col);
-    static bool RectBall(const ColliderComponent& col, const std::vector<Entity*>& balls);
+    static bool RectBall(const ColliderComponent& rect, const ColliderComponent& ball);
 };
 #endif //MYGAME_COLLISION_H
