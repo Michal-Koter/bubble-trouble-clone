@@ -11,5 +11,6 @@
 #include "KeyboardController.h"
 #include "ColliderComponent.h"
 #include "TileComponent.h"
+#include "BallComponent.h"
 
 #endif //MYGAME_COMPONENTS_H

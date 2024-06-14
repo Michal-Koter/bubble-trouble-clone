@@ -59,7 +59,7 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height) {
     player.addGroup(GROUP_PLAYERS);
 
     wall.addComponent<TransformComponent>(350., 100., 300, 400, 1);
-    wall.addComponent<SpriteComponent>("assets/spear.bmp");
+//    wall.addComponent<SpriteComponent>("assets/spear.bmp");
     wall.addComponent<ColliderComponent>("spear");
     wall.addGroup(GROUP_MAP); //change in the future
 
@@ -67,6 +67,7 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height) {
     ball.getComponent<TransformComponent>().setVelocity(55,10);
     ball.addComponent<SpriteComponent>("assets/ball.bmp");
     ball.addComponent<ColliderComponent>("ball");
+    ball.addComponent<BallComponent>();
     ball.addGroup(GROUP_BALLS);
 
 }
@@ -99,7 +100,7 @@ void Game::update() {
 
         p->update();
 
-        if (Collision::PlayerBall(p->getComponent<ColliderComponent>(), balls)) {
+        if (Collision::RectBall(p->getComponent<ColliderComponent>(), balls)) {
             std::cout << "bal hit!" << std::endl;
         }
 
@@ -114,17 +115,13 @@ void Game::update() {
 
         b->update();
         if (Collision::Flor(b->getComponent<ColliderComponent>())) {
-            b->getComponent<TransformComponent>().setPosition(oldTransform.position.x, oldTransform.position.y);
-            b->getComponent<TransformComponent>().setVelocity(oldTransform.velocity.x, 0.);
-            b->getComponent<TransformComponent>().setAcceleration(0., -8000);
+            b->getComponent<BallComponent>().floorBounce(oldTransform);
         } else {
-            b->getComponent<TransformComponent>().setAcceleration(0, 100);
+            b->getComponent<BallComponent>().inAir();
         }
 
         if (Collision::XFrameCollision(b->getComponent<ColliderComponent>())) {
-            b->getComponent<TransformComponent>().setPosition(oldTransform.position.x, oldTransform.position.y);
-            b->getComponent<TransformComponent>().setVelocity(-oldTransform.velocity.x, oldTransform.velocity.y);
-            b->getComponent<TransformComponent>().setAcceleration(-oldTransform.acceleration.x, oldTransform.acceleration.y);
+            b->getComponent<BallComponent>().wallBounce(oldTransform);
         }
 
     }
@@ -136,9 +133,6 @@ void Game::render() {
 
     map->loadMap();
 
-//    for (auto& t: tiles) {
-//        t->draw();
-//    }
     for (auto& vec : collection) {
         for (auto& entity: *vec) {
             entity->draw();

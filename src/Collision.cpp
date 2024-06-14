@@ -41,14 +41,14 @@ bool Collision::Ceiling(const ColliderComponent &col) {
     return (rect.y< 32);
 }
 
-bool Collision::PlayerBall(const ColliderComponent& player, const std::vector<Entity*>& balls) {
-    auto playerRect = player.collider;
+bool Collision::RectBall(const ColliderComponent& col, const std::vector<Entity*>& balls) {
+    auto playerRect = col.collider;
 
     int numPoints = 100;
     double thetaStep = 2 * M_PI / numPoints;
 
     for (auto b : balls) {
-        if (!AABB(player, b->getComponent<ColliderComponent>())) {
+        if (!AABB(col, b->getComponent<ColliderComponent>())) {
             continue;
         }
 
