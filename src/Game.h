@@ -6,6 +6,9 @@
 #define MYGAME_GAME_H
 
 #include "SDL2/SDL.h"
+#include "Vector2D.h"
+//#include "ECS/ECS.h"
+//#include "ECS/Components.h"
 #include <cstdio>
 #include <memory>
 #include <stdexcept>
@@ -36,6 +39,7 @@ public:
     static SDL_Renderer *renderer;
     static SDL_Event event;
     static std::vector<ColliderComponent*> colliders;
+//    static void SplitBall(Vector2D pos, Vector2D vol, Vector2D acc, int scale);
 
 private:
     bool isRunning;

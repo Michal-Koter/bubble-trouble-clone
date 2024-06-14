@@ -7,6 +7,7 @@
 #include "ECS/Components.h"
 #include "Vector2D.h"
 #include "Collision.h"
+#include "Group.h"
 
 //std::shared_ptr<SDL_Texture> background;
 Map *map;
@@ -21,13 +22,7 @@ auto &player(manager.addEntity());
 auto &spear(manager.addEntity());
 auto &ball(manager.addEntity());
 
-enum groupLabels : std::size_t {
-    GROUP_MAP,
-    GROUP_PLAYERS,
-    GROUP_BALLS,
-    GROUP_SPEARS,
-//    GROUP_COLLIDERS
-};
+
 
 Game::Game() {}
 
@@ -52,8 +47,8 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height) {
 
 //    Map::LoadMap("assets/basic.map", 25, 20);
 
-    player.addComponent<TransformComponent>(); // setting the start position using constructor doesn't work. Why? IDK!
-    player.getComponent<TransformComponent>().setPosition(100, 448);
+    player.addComponent<TransformComponent>(384, 448); // setting the start position using constructor doesn't work. Why? IDK!
+//    player.getComponent<TransformComponent>().setPosition(100, 448);
     player.addComponent<SpriteComponent>("assets/player.bmp");
     player.addComponent<KeyboardController>();
     player.addComponent<ColliderComponent>("player");
@@ -66,7 +61,7 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height) {
     spear.addComponent<SpearComponent>();
     spear.addGroup(GROUP_SPEARS);
 
-    ball.addComponent<TransformComponent>(100,100,24,24,3);
+    ball.addComponent<TransformComponent>(384,300,24,24,3);
     ball.getComponent<TransformComponent>().setVelocity(55,10);
     ball.addComponent<SpriteComponent>("assets/ball.bmp");
     ball.addComponent<ColliderComponent>("ball");
@@ -130,7 +125,7 @@ void Game::update() {
                 s->getComponent<SpearComponent>().moveOutOfFrame();
 
                 // split the ball
-
+                b->getComponent<BallComponent>().split(manager);
             }
         }
     }

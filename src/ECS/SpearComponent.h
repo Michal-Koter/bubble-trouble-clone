@@ -11,6 +11,7 @@
 class SpearComponent : public Component {
 public:
     TransformComponent *transform{};
+    int speed = 2;
 
     SpearComponent() = default;
 
@@ -25,8 +26,8 @@ public:
         if (transform->position.y < 32) {
             moveOutOfFrame();
         } else {
-            transform->height++;
-            transform->position.y--;
+            transform->height += speed;
+            transform->position.y -= speed;
         }
     }
 
