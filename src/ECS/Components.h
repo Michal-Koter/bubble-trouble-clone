@@ -12,5 +12,6 @@
 #include "ColliderComponent.h"
 #include "TileComponent.h"
 #include "BallComponent.h"
+#include "SpearComponent.h"
 
 #endif //MYGAME_COMPONENTS_H
