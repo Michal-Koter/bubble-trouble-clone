@@ -12,12 +12,14 @@ class TransformComponent : public Component {
 public:
     Vector2D position;
     Vector2D velocity;
+    Vector2D acceleration;
 
     int height = 64;
     int width = 32;
     int scale = 1;
 
     int speed = 3;
+    double dt = 1./60.;
 
     TransformComponent() {
         position.Zero();
@@ -43,16 +45,33 @@ public:
 
     void init() override {
         velocity.Zero();
+        acceleration.Zero();
     }
 
     void update() override {
-        position.x += velocity.x * speed;
-        position.y += velocity.y * speed;
+//        position.x += velocity.x * speed;
+//        position.y += velocity.y * speed;
+
+        position.x = position.x + (velocity.x * dt) + (acceleration.x*dt*dt)*0.5;
+        velocity.x = velocity.x + (acceleration.x * dt)*scale/.8;
+
+        position.y = position.y + (velocity.y * dt) + (acceleration.y*dt*dt)*0.5;
+        velocity.y = velocity.y + (acceleration.y * dt)*scale/1.2;
     }
 
-    void setPos(double x, double y) {
+    void setPosition(double x, double y) {
         position.x = x;
         position.y = y;
+    }
+
+    void setVelocity(double x, double y) {
+        velocity.x = x;
+        velocity.y = y;
+    }
+
+    void setAcceleration(double x, double y) {
+        acceleration.x = x;
+        acceleration.y = y;
     }
 };
 

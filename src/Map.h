@@ -13,6 +13,7 @@ public:
     Map();
     ~Map();
 
+    void loadMap();
     static void LoadMap(const std::string& path, int sizeX, int sizeY);
 private:
     SDL_Rect src, dest;
