@@ -41,7 +41,8 @@ bool Collision::Ceiling(const ColliderComponent &col) {
     return (rect.y < 32);
 }
 
-bool Collision::RectBall(const ColliderComponent& rect, const ColliderComponent& ball) {
+bool Collision::RectBall(const ColliderComponent &rect, const ColliderComponent &ball) {
+    // check distance between the nearest point of rect and middle of circle. If is less than radius, collision is???
     auto playerRect = rect.collider;
 
     int numPoints = 100;

@@ -41,25 +41,29 @@ public:
         auto& leftBall(manager.addEntity());
         auto& rightBall(manager.addEntity());
 
-        leftBall.addComponent<TransformComponent>(transform->position.x - 10, transform->position.y, 24, 24, transform->scale - 1);
-        leftBall.getComponent<TransformComponent>().setVelocity(-transform->velocity.x, transform->velocity.y);
-        leftBall.getComponent<TransformComponent>().setAcceleration(transform->acceleration.x, transform->acceleration.y - 500);
-        leftBall.addComponent<SpriteComponent>("assets/ball.bmp");
-        leftBall.addComponent<ColliderComponent>("ball");
-        leftBall.addComponent<BallComponent>();
-        leftBall.addGroup(GROUP_BALLS);
+        if (transform->scale > 1) {
+            leftBall.addComponent<TransformComponent>(transform->position.x - 5*transform->scale, transform->position.y, 24, 24,
+                                                      transform->scale - 1);
+            leftBall.getComponent<TransformComponent>().setVelocity(-transform->velocity.x, 0);
+            leftBall.getComponent<TransformComponent>().setAcceleration(transform->acceleration.x,
+                                                                        transform->acceleration.y - 8000);
+            leftBall.addComponent<SpriteComponent>("assets/ball.bmp");
+            leftBall.addComponent<ColliderComponent>("ball");
+            leftBall.addComponent<BallComponent>();
+            leftBall.addGroup(GROUP_BALLS);
 
-        rightBall.addComponent<TransformComponent>(transform->position.x + 10, transform->position.y, 24, 24, transform->scale - 1);
-        rightBall.getComponent<TransformComponent>().setVelocity(transform->velocity.x, transform->velocity.y);
-        rightBall.getComponent<TransformComponent>().setAcceleration(transform->acceleration.x, transform->acceleration.y - 500);
-        rightBall.addComponent<SpriteComponent>("assets/ball.bmp");
-        rightBall.addComponent<ColliderComponent>("ball");
-        rightBall.addComponent<BallComponent>();
-        rightBall.addGroup(GROUP_BALLS);
+            rightBall.addComponent<TransformComponent>(transform->position.x + 5*transform->scale, transform->position.y, 24, 24,
+                                                       transform->scale - 1);
+            rightBall.getComponent<TransformComponent>().setVelocity(transform->velocity.x, 0);
+            rightBall.getComponent<TransformComponent>().setAcceleration(transform->acceleration.x,
+                                                                         transform->acceleration.y - 8000);
+            rightBall.addComponent<SpriteComponent>("assets/ball.bmp");
+            rightBall.addComponent<ColliderComponent>("ball");
+            rightBall.addComponent<BallComponent>();
+            rightBall.addGroup(GROUP_BALLS);
+        }
 
-        transform->setPosition(-100,0);
-        transform->velocity.Zero();
-        transform->acceleration.Zero();
+        entity->destroy();
     }
 
 };

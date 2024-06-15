@@ -47,15 +47,13 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height) {
 
 //    Map::LoadMap("assets/basic.map", 25, 20);
 
-    player.addComponent<TransformComponent>(384, 448); // setting the start position using constructor doesn't work. Why? IDK!
-//    player.getComponent<TransformComponent>().setPosition(100, 448);
+    player.addComponent<TransformComponent>(384, 448);
     player.addComponent<SpriteComponent>("assets/player.bmp");
     player.addComponent<KeyboardController>();
     player.addComponent<ColliderComponent>("player");
     player.addGroup(GROUP_PLAYERS);
 
     spear.addComponent<TransformComponent>(-20, 0, 450, 9, 1);
-//    spear.getComponent<TransformComponent>().startThrow(500,100);
     spear.addComponent<SpriteComponent>("assets/spear.bmp");
     spear.addComponent<ColliderComponent>("spear");
     spear.addComponent<SpearComponent>();
@@ -124,12 +122,13 @@ void Game::update() {
             if (Collision::RectBall(s->getComponent<ColliderComponent>(), b->getComponent<ColliderComponent>())) {
                 s->getComponent<SpearComponent>().moveOutOfFrame();
 
-                // split the ball
                 b->getComponent<BallComponent>().split(manager);
             }
         }
     }
 
+    // game exit if all balls are destroyed
+    if (balls.empty()) exit(0);
     for (auto b : balls) {
         auto oldTransform = b->getComponent<TransformComponent>();
 
