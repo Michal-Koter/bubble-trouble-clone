@@ -42,7 +42,6 @@ bool Collision::Ceiling(const ColliderComponent &col) {
 }
 
 bool Collision::RectBall(const ColliderComponent &rect, const ColliderComponent &ball) {
-    // check distance between the nearest point of rect and middle of circle. If is less than radius, collision is???
     auto playerRect = rect.collider;
 
     int numPoints = 100;
@@ -53,9 +52,9 @@ bool Collision::RectBall(const ColliderComponent &rect, const ColliderComponent 
         return false;
     }
 
-    int x0 = ball.collider.x;
-    int y0 = ball.collider.y;
-    double r = ball.collider.w * ball.transform->scale / 2;
+    int x0 = ball.collider.x + ball.collider.w / 2;
+    int y0 = ball.collider.y + ball.collider.h / 2;
+    double r = ball.collider.w / 2;
 
     for (int i = 0; i < numPoints; ++i) {
         double theta = i * thetaStep;
@@ -67,6 +66,5 @@ bool Collision::RectBall(const ColliderComponent &rect, const ColliderComponent 
             return true;
         }
     }
-
     return false;
 }
