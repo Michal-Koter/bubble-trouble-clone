@@ -15,29 +15,33 @@ int main(int argc, char *argv[])
     using namespace std;
 
     const int FPS = 60;
-    const int frameDelay = 1000 / FPS; // dt
+    const int frameDelay = 1000 / FPS;
 
     Uint32 frameStart;
     int frameTime;
 
-    game = new Game();
-    game->init("My game", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 640);
+    game = new Game("My game", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 640);
 
-    while (game->running()) {
-        frameStart = SDL_GetTicks();
+    while (Game::getPlayerLives() > 0) {
+        game->init();
 
-        game->handleEvents();
-        game->update();
-        game->render();
+        while (game->running()) {
+            frameStart = SDL_GetTicks();
 
-        frameTime = SDL_GetTicks() - frameStart;
+            game->handleEvents();
+            game->update();
+            game->render();
 
-        if (frameDelay > frameTime) {
-            SDL_Delay(frameDelay - frameTime);
+            frameTime = SDL_GetTicks() - frameStart;
+
+            if (frameDelay > frameTime) {
+                SDL_Delay(frameDelay - frameTime);
+            }
         }
+        game->clear();
     }
 
-    game->clear();
+    game->destroy();
 
     return 0;
 }

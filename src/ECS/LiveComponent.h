@@ -22,7 +22,7 @@ public:
     void draw() override {
         for (int i = 0; i < maxLives; ++i) {
             destRec.x = TILE_SIZE * (i + 1) + 8 * i;
-            if (i <= remainingLives) {
+            if (i < remainingLives) {
                 TextureManager::Draw(fullHeart.get(), srcRect, destRec);
             } else {
                 TextureManager::Draw(emptyHeart.get(), srcRect, destRec);
@@ -30,8 +30,12 @@ public:
         }
     }
 
-    void lossHeart() {
+    void lossLive() {
         remainingLives--;
+    }
+
+    int getLives() {
+        return remainingLives;
     }
 
 private:
