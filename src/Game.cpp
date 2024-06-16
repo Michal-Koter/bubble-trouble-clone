@@ -51,6 +51,7 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height) {
     player.addComponent<SpriteComponent>("assets/player.bmp");
     player.addComponent<KeyboardController>();
     player.addComponent<ColliderComponent>("player");
+    player.addComponent<LiveComponent>();
     player.addGroup(GROUP_PLAYERS);
 
     spear.addComponent<TransformComponent>(-20, 0, 450, 9, 1);
@@ -91,7 +92,7 @@ auto& players(manager.getGroup(GROUP_PLAYERS));
 auto& balls(manager.getGroup(GROUP_BALLS));
 //auto& colliders(manager.getGroup(GROUP_COLLIDERS));
 auto& spears(manager.getGroup(GROUP_SPEARS));
-std::vector<Entity*>* collection[4] = {&tiles, &spears, &players, &balls};
+std::vector<Entity*>* collection[4] = {&tiles, &spears, &balls, &players};
 
 void Game::update() {
     manager.refresh();
@@ -105,6 +106,7 @@ void Game::update() {
         for (auto b : balls) {
             if (Collision::RectBall(p->getComponent<ColliderComponent>(), b->getComponent<ColliderComponent>())) {
                 std::cout << "bal hit!" << std::endl;
+                p->getComponent<LiveComponent>().lossHeart();
 //                exit(1);
             }
         }

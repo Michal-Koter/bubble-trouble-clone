@@ -49,7 +49,7 @@ public:
 
     virtual void draw() {}
 
-    virtual ~Component() {}
+    virtual ~Component() = default;
 };
 
 class Entity {
