@@ -7,6 +7,7 @@
 #include "ECS/Components.h"
 #include "Vector2D.h"
 #include "Collision.h"
+#include "Group.h"
 
 //std::shared_ptr<SDL_Texture> background;
 Map *map;
@@ -18,15 +19,10 @@ std::vector<ColliderComponent*> Game::colliders;
 Manager manager;
 auto &background(manager.addEntity());
 auto &player(manager.addEntity());
-auto &wall(manager.addEntity());
+auto &spear(manager.addEntity());
 auto &ball(manager.addEntity());
 
-enum groupLabels : std::size_t {
-    GROUP_MAP,
-    GROUP_PLAYERS,
-    GROUP_BALLS,
-    GROUP_COLLIDERS
-};
+
 
 Game::Game() {}
 
@@ -51,19 +47,19 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height) {
 
 //    Map::LoadMap("assets/basic.map", 25, 20);
 
-    player.addComponent<TransformComponent>(); // setting the start position using constructor doesn't work. Why? IDK!
-    player.getComponent<TransformComponent>().setPosition(100, 448);
+    player.addComponent<TransformComponent>(384, 448);
     player.addComponent<SpriteComponent>("assets/player.bmp");
     player.addComponent<KeyboardController>();
     player.addComponent<ColliderComponent>("player");
     player.addGroup(GROUP_PLAYERS);
 
-    wall.addComponent<TransformComponent>(350., 100., 300, 400, 1);
-//    wall.addComponent<SpriteComponent>("assets/spear.bmp");
-    wall.addComponent<ColliderComponent>("spear");
-    wall.addGroup(GROUP_MAP); //change in the future
+    spear.addComponent<TransformComponent>(-20, 0, 450, 9, 1);
+    spear.addComponent<SpriteComponent>("assets/spear.bmp");
+    spear.addComponent<ColliderComponent>("spear");
+    spear.addComponent<SpearComponent>();
+    spear.addGroup(GROUP_SPEARS);
 
-    ball.addComponent<TransformComponent>(100,100,24,24,3);
+    ball.addComponent<TransformComponent>(384,300,24,24,3);
     ball.getComponent<TransformComponent>().setVelocity(55,10);
     ball.addComponent<SpriteComponent>("assets/ball.bmp");
     ball.addComponent<ColliderComponent>("ball");
@@ -79,6 +75,11 @@ void Game::handleEvents() {
         case SDL_QUIT:
             isRunning = false;
             break;
+        case SDL_KEYDOWN:
+            if (event.key.keysym.sym == SDLK_SPACE && spear.getComponent<TransformComponent>().position.x < 0) {
+                spear.getComponent<SpearComponent>().startThrow(player.getComponent<TransformComponent>());
+            }
+            break;
         default:
             break;
     }
@@ -88,8 +89,9 @@ void Game::handleEvents() {
 auto& tiles(manager.getGroup(GROUP_MAP));
 auto& players(manager.getGroup(GROUP_PLAYERS));
 auto& balls(manager.getGroup(GROUP_BALLS));
-auto& colliders(manager.getGroup(GROUP_COLLIDERS));
-std::vector<Entity*>* collection[4] = {&tiles, &players, &balls, &colliders};
+//auto& colliders(manager.getGroup(GROUP_COLLIDERS));
+auto& spears(manager.getGroup(GROUP_SPEARS));
+std::vector<Entity*>* collection[4] = {&tiles, &spears, &players, &balls};
 
 void Game::update() {
     manager.refresh();
@@ -100,8 +102,11 @@ void Game::update() {
 
         p->update();
 
-        if (Collision::RectBall(p->getComponent<ColliderComponent>(), balls)) {
-            std::cout << "bal hit!" << std::endl;
+        for (auto b : balls) {
+            if (Collision::RectBall(p->getComponent<ColliderComponent>(), b->getComponent<ColliderComponent>())) {
+                std::cout << "bal hit!" << std::endl;
+//                exit(1);
+            }
         }
 
         if (Collision::FrameCollision(p->getComponent<ColliderComponent>())) {
@@ -110,10 +115,29 @@ void Game::update() {
         }
     }
 
+    for (auto s : spears) {
+        s->update();
+
+        for (auto b : balls) {
+            if (Collision::RectBall(s->getComponent<ColliderComponent>(), b->getComponent<ColliderComponent>())) {
+                s->getComponent<SpearComponent>().moveOutOfFrame();
+
+                b->getComponent<BallComponent>().split(manager);
+            }
+        }
+    }
+
+    // game exit if all balls are destroyed
+    if (balls.empty()) exit(0);
     for (auto b : balls) {
         auto oldTransform = b->getComponent<TransformComponent>();
 
         b->update();
+
+        if (Collision::Ceiling(b->getComponent<ColliderComponent>())) {
+            b->destroy();
+        }
+
         if (Collision::Flor(b->getComponent<ColliderComponent>())) {
             b->getComponent<BallComponent>().floorBounce(oldTransform);
         } else {
@@ -123,7 +147,6 @@ void Game::update() {
         if (Collision::XFrameCollision(b->getComponent<ColliderComponent>())) {
             b->getComponent<BallComponent>().wallBounce(oldTransform);
         }
-
     }
 }
 

@@ -31,13 +31,11 @@ public:
     }
 
     TransformComponent(double x, double y) {
-        position.x = x;
-        position.y = y;
+        setPosition(x, y);
     }
 
     TransformComponent(double x, double y, int h, int w, int sc) {
-        position.x = x;
-        position.y = y;
+        setPosition(x, y);
         width = w;
         height = h;
         scale = sc;
@@ -62,6 +60,10 @@ public:
     void setPosition(double x, double y) {
         position.x = x;
         position.y = y;
+    }
+
+    void setPosition(const Vector2D vec) {
+        position = vec;
     }
 
     void setVelocity(double x, double y) {

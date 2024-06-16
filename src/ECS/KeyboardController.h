@@ -24,12 +24,12 @@ public:
                 case SDLK_RIGHT:
                     transform->velocity.x = 70;
                     break;
-                case SDLK_UP:
-                    transform->velocity.y = -70;
-                    break;
-                case SDLK_DOWN:
-                    transform->velocity.y = 70;
-                    break;
+//                case SDLK_UP:
+//                    transform->velocity.y = -70;
+//                    break;
+//                case SDLK_DOWN:
+//                    transform->velocity.y = 70;
+//                    break;
                 default:
                     break;
             }
@@ -42,11 +42,11 @@ public:
                 case SDLK_RIGHT:
                     transform->velocity.x = 0;
                     break;
-                case SDLK_UP:
-                    transform->velocity.y = 0;
-                    break;
-                case SDLK_DOWN:
-                    transform->velocity.y = 0;
+//                case SDLK_UP:
+//                    transform->velocity.y = 0;
+//                    break;
+//                case SDLK_DOWN:
+//                    transform->velocity.y = 0;
                 default:
                     break;
             }

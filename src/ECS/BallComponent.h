@@ -6,6 +6,7 @@
 #define MYGAME_BOUNCECOMPONENT_H
 
 #include "Components.h"
+#include "../Group.h"
 
 class BallComponent : public Component {
 public:
@@ -34,6 +35,35 @@ public:
 
     void inAir() const {
         transform->setAcceleration(0., 100);
+    }
+
+    void split(Manager& manager) {
+        auto& leftBall(manager.addEntity());
+        auto& rightBall(manager.addEntity());
+
+        if (transform->scale > 1) {
+            leftBall.addComponent<TransformComponent>(transform->position.x - 5*transform->scale, transform->position.y, 24, 24,
+                                                      transform->scale - 1);
+            leftBall.getComponent<TransformComponent>().setVelocity(-transform->velocity.x, 0);
+            leftBall.getComponent<TransformComponent>().setAcceleration(transform->acceleration.x,
+                                                                        transform->acceleration.y - 8000);
+            leftBall.addComponent<SpriteComponent>("assets/ball.bmp");
+            leftBall.addComponent<ColliderComponent>("ball");
+            leftBall.addComponent<BallComponent>();
+            leftBall.addGroup(GROUP_BALLS);
+
+            rightBall.addComponent<TransformComponent>(transform->position.x + 5*transform->scale, transform->position.y, 24, 24,
+                                                       transform->scale - 1);
+            rightBall.getComponent<TransformComponent>().setVelocity(transform->velocity.x, 0);
+            rightBall.getComponent<TransformComponent>().setAcceleration(transform->acceleration.x,
+                                                                         transform->acceleration.y - 8000);
+            rightBall.addComponent<SpriteComponent>("assets/ball.bmp");
+            rightBall.addComponent<ColliderComponent>("ball");
+            rightBall.addComponent<BallComponent>();
+            rightBall.addGroup(GROUP_BALLS);
+        }
+
+        entity->destroy();
     }
 
 };
