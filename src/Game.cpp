@@ -133,6 +133,11 @@ void Game::update() {
         auto oldTransform = b->getComponent<TransformComponent>();
 
         b->update();
+
+        if (Collision::Ceiling(b->getComponent<ColliderComponent>())) {
+            b->destroy();
+        }
+
         if (Collision::Flor(b->getComponent<ColliderComponent>())) {
             b->getComponent<BallComponent>().floorBounce(oldTransform);
         } else {
