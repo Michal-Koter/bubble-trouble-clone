@@ -13,5 +13,6 @@
 #include "TileComponent.h"
 #include "BallComponent.h"
 #include "SpearComponent.h"
+#include "LiveComponent.h"
 
 #endif //MYGAME_COMPONENTS_H

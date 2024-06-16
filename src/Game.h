@@ -19,11 +19,11 @@ class ColliderComponent;
 class Game {
 
 public:
-    Game();
+    Game(const char *title, int xpos, int ypos, int width, int height);
 
     ~Game();
 
-    void init(const char *title, int xpos, int ypos, int width, int height);
+    void init();
 
     void handleEvents();
 
@@ -33,12 +33,15 @@ public:
 
     void clear();
 
+    void destroy();
+
     bool running() { return isRunning; }
 
-    static void AddTile(int id, int x, int y);
+//    static void AddTile(int id, int x, int y);
     static SDL_Renderer *renderer;
     static SDL_Event event;
     static std::vector<ColliderComponent*> colliders;
+    static int getPlayerLives();
 //    static void SplitBall(Vector2D pos, Vector2D vol, Vector2D acc, int scale);
 
 private:

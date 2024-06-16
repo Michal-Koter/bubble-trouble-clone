@@ -5,11 +5,9 @@
 #include "Game.h"
 #include "Map.h"
 #include "ECS/Components.h"
-#include "Vector2D.h"
 #include "Collision.h"
 #include "Group.h"
 
-//std::shared_ptr<SDL_Texture> background;
 Map *map;
 SDL_Renderer *Game::renderer = nullptr;
 SDL_Event Game::event;
@@ -17,18 +15,12 @@ SDL_Event Game::event;
 std::vector<ColliderComponent*> Game::colliders;
 
 Manager manager;
-auto &background(manager.addEntity());
+//auto &background(manager.addEntity());
 auto &player(manager.addEntity());
 auto &spear(manager.addEntity());
-auto &ball(manager.addEntity());
 
 
-
-Game::Game() {}
-
-Game::~Game() {}
-
-void Game::init(const char *title, int xpos, int ypos, int width, int height) {
+Game::Game(const char *title, int xpos, int ypos, int width, int height) {
     if (SDL_Init(SDL_INIT_EVERYTHING) == 0) {
         window = SDL_CreateWindow(title, xpos, ypos, width, height, 0);
         renderer = SDL_CreateRenderer(window, -1, 0);
@@ -38,19 +30,13 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height) {
         isRunning = true;
     } else {
         isRunning = false;
+        return;
     }
-
-    map = new Map();
-//    background.addComponent<TransformComponent>(0, 0, height, width, 1);
-//    background.addComponent<SpriteComponent>("assets/background.bmp");
-//    background.addGroup(GROUP_MAP);
-
-//    Map::LoadMap("assets/basic.map", 25, 20);
-
     player.addComponent<TransformComponent>(384, 448);
     player.addComponent<SpriteComponent>("assets/player.bmp");
     player.addComponent<KeyboardController>();
     player.addComponent<ColliderComponent>("player");
+    player.addComponent<LiveComponent>();
     player.addGroup(GROUP_PLAYERS);
 
     spear.addComponent<TransformComponent>(-20, 0, 450, 9, 1);
@@ -58,7 +44,20 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height) {
     spear.addComponent<ColliderComponent>("spear");
     spear.addComponent<SpearComponent>();
     spear.addGroup(GROUP_SPEARS);
+}
 
+Game::~Game() {}
+
+void Game::init() {
+    isRunning = true;
+
+    map = new Map();
+
+    player.getComponent<TransformComponent>().setPosition(384, 448);
+
+    spear.getComponent<TransformComponent>().setPosition(-100,0);
+
+    auto &ball(manager.addEntity());
     ball.addComponent<TransformComponent>(384,300,24,24,3);
     ball.getComponent<TransformComponent>().setVelocity(55,10);
     ball.addComponent<SpriteComponent>("assets/ball.bmp");
@@ -86,12 +85,13 @@ void Game::handleEvents() {
 
 }
 
-auto& tiles(manager.getGroup(GROUP_MAP));
+//auto& tiles(manager.getGroup(GROUP_MAP));
 auto& players(manager.getGroup(GROUP_PLAYERS));
 auto& balls(manager.getGroup(GROUP_BALLS));
 //auto& colliders(manager.getGroup(GROUP_COLLIDERS));
 auto& spears(manager.getGroup(GROUP_SPEARS));
-std::vector<Entity*>* collection[4] = {&tiles, &spears, &players, &balls};
+//std::vector<Entity*>* collection[4] = {&tiles, &spears, &balls, &players};
+std::vector<Entity*>* collection[3] = {&spears, &balls, &players};
 
 void Game::update() {
     manager.refresh();
@@ -105,7 +105,9 @@ void Game::update() {
         for (auto b : balls) {
             if (Collision::RectBall(p->getComponent<ColliderComponent>(), b->getComponent<ColliderComponent>())) {
                 std::cout << "bal hit!" << std::endl;
-//                exit(1);
+                p->getComponent<LiveComponent>().lossLive();
+                this->isRunning = false;
+                return;
             }
         }
 
@@ -166,15 +168,28 @@ void Game::render() {
 }
 
 void Game::clear() {
+    for (auto b: balls) {
+        b->destroy();
+    }
+//    for(auto t: tiles) {
+//        t->destroy();
+//    }
+}
+
+void Game::destroy() {
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
     SDL_Quit();
 }
 
-void Game::AddTile(int id, int x, int y) {
-    auto& tile(manager.addEntity());
-    
-    tile.addComponent<TileComponent>(x,y,32,32,id);
-    tile.addComponent<ColliderComponent>("dirt");
-    tile.addGroup(GROUP_MAP);
+//void Game::AddTile(int id, int x, int y) {
+//    auto& tile(manager.addEntity());
+//
+//    tile.addComponent<TileComponent>(x,y,32,32,id);
+//    tile.addComponent<ColliderComponent>("dirt");
+//    tile.addGroup(GROUP_MAP);
+//}
+
+int Game::getPlayerLives() {
+    return player.getComponent<LiveComponent>().getLives();
 }
