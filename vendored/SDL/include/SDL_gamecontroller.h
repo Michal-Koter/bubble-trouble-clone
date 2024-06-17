@@ -456,7 +456,7 @@ extern DECLSPEC int SDLCALL SDL_GameControllerGetPlayerIndex(SDL_GameController 
  * Set the player index of an opened game controller.
  *
  * \param gamecontroller the game controller object to adjust.
- * \param player_index Player index to assign to this controller, or -1 to
+ * \param player_index PlayerEntity index to assign to this controller, or -1 to
  *                     clear the player index and turn off player LEDs.
  *
  * \since This function is available since SDL 2.0.12.

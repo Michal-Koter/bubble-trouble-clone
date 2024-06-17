@@ -1,18 +1,13 @@
 #include "SDL2/SDL.h"
 #include <iostream>
-#include <memory>
-#include <chrono>
-#include <thread>
 #include <vector>
 #include "Game.h"
 
 Game *game = nullptr;
 
-int main(int argc, char *argv[])
-{
-    using namespace std::chrono_literals;
-    using namespace std::chrono;
-    using namespace std;
+int main(int argc, char *argv[]) {
+    bool multiplayer = false;
+    if (argc > 1 && std::string(argv[1]) == "multi") multiplayer = true;
 
     const int FPS = 60;
     const int frameDelay = 1000 / FPS;
@@ -20,7 +15,7 @@ int main(int argc, char *argv[])
     Uint32 frameStart;
     int frameTime;
 
-    game = new Game("My game", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 640);
+    game = new Game("My game", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 640, multiplayer);
 
     while (Game::getPlayerLives() > 0) {
         game->init();

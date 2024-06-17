@@ -134,7 +134,7 @@ struct GL_ShaderContext
 "    yuv.y = texture2D(tex1, tcoord).r;\n"                      \
 "    yuv.z = texture2D(tex2, tcoord).r;\n"                      \
 "\n"                                                            \
-"    // Do the color transform \n"                              \
+"    // Do the color spearTransform \n"                              \
 "    yuv += offset;\n"                                          \
 "    rgb.r = dot(yuv, Rcoeff);\n"                               \
 "    rgb.g = dot(yuv, Gcoeff);\n"                               \
@@ -166,7 +166,7 @@ struct GL_ShaderContext
 "    tcoord *= UVCoordScale;\n"                                 \
 "    yuv.yz = texture2D(tex1, tcoord).ra;\n"                    \
 "\n"                                                            \
-"    // Do the color transform \n"                              \
+"    // Do the color spearTransform \n"                              \
 "    yuv += offset;\n"                                          \
 "    rgb.r = dot(yuv, Rcoeff);\n"                               \
 "    rgb.g = dot(yuv, Gcoeff);\n"                               \
@@ -191,7 +191,7 @@ struct GL_ShaderContext
 "    tcoord *= UVCoordScale;\n"                                 \
 "    yuv.yz = texture2D(tex1, tcoord).rg;\n"                    \
 "\n"                                                            \
-"    // Do the color transform \n"                              \
+"    // Do the color spearTransform \n"                              \
 "    yuv += offset;\n"                                          \
 "    rgb.r = dot(yuv, Rcoeff);\n"                               \
 "    rgb.g = dot(yuv, Gcoeff);\n"                               \
@@ -223,7 +223,7 @@ struct GL_ShaderContext
 "    tcoord *= UVCoordScale;\n"                                 \
 "    yuv.yz = texture2D(tex1, tcoord).ar;\n"                    \
 "\n"                                                            \
-"    // Do the color transform \n"                              \
+"    // Do the color spearTransform \n"                              \
 "    yuv += offset;\n"                                          \
 "    rgb.r = dot(yuv, Rcoeff);\n"                               \
 "    rgb.g = dot(yuv, Gcoeff);\n"                               \

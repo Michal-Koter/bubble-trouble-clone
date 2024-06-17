@@ -14,7 +14,6 @@ public:
     ~Map();
 
     void loadMap();
-//    static void LoadMap(const std::string& path, int sizeX, int sizeY);
 private:
     SDL_Rect src, dest;
     std::shared_ptr<SDL_Texture> backgroundTexture;

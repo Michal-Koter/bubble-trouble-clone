@@ -203,7 +203,7 @@ static const char GLES2_Fragment_TextureBGR[] =                 \
 "    yuv.y = texture2D(u_texture_u, v_texCoord).r;\n"           \
 "    yuv.z = texture2D(u_texture_v, v_texCoord).r;\n"           \
 "\n"                                                            \
-"    // Do the color transform \n"                              \
+"    // Do the color spearTransform \n"                              \
 "    yuv += offset;\n"                                          \
 "    rgb = matrix * yuv;\n"                                     \
 "\n"                                                            \
@@ -222,7 +222,7 @@ static const char GLES2_Fragment_TextureBGR[] =                 \
 "    yuv.x = texture2D(u_texture,   v_texCoord).r;\n"           \
 "    yuv.yz = texture2D(u_texture_u, v_texCoord).ra;\n"         \
 "\n"                                                            \
-"    // Do the color transform \n"                              \
+"    // Do the color spearTransform \n"                              \
 "    yuv += offset;\n"                                          \
 "    rgb = matrix * yuv;\n"                                     \
 "\n"                                                            \
@@ -241,7 +241,7 @@ static const char GLES2_Fragment_TextureBGR[] =                 \
 "    yuv.x = texture2D(u_texture,   v_texCoord).r;\n"           \
 "    yuv.yz = texture2D(u_texture_u, v_texCoord).rg;\n"         \
 "\n"                                                            \
-"    // Do the color transform \n"                              \
+"    // Do the color spearTransform \n"                              \
 "    yuv += offset;\n"                                          \
 "    rgb = matrix * yuv;\n"                                     \
 "\n"                                                            \
@@ -260,7 +260,7 @@ static const char GLES2_Fragment_TextureBGR[] =                 \
 "    yuv.x = texture2D(u_texture,   v_texCoord).r;\n"           \
 "    yuv.yz = texture2D(u_texture_u, v_texCoord).ar;\n"         \
 "\n"                                                            \
-"    // Do the color transform \n"                              \
+"    // Do the color spearTransform \n"                              \
 "    yuv += offset;\n"                                          \
 "    rgb = matrix * yuv;\n"                                     \
 "\n"                                                            \

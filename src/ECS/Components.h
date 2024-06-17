@@ -8,11 +8,12 @@
 #include "ECS.h"
 #include "TransformComponent.h"
 #include "SpriteComponent.h"
-#include "KeyboardController.h"
+#include "KeyboardMoveController.h"
+#include "KeyboardSpearController.h"
 #include "ColliderComponent.h"
-#include "TileComponent.h"
 #include "BallComponent.h"
 #include "SpearComponent.h"
 #include "LiveComponent.h"
+#include "NametagComponent.h"
 
 #endif //MYGAME_COMPONENTS_H
