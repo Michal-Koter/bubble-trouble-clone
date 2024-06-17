@@ -23,8 +23,8 @@ public:
     }
 
     void update() override {
-        if (id == 1) firstPlayer();
-        if (id == 2) secondPlayer();
+        if (id == FIRST_PLAYER_ID) firstPlayer();
+        if (id == SECOND_PLAYER_ID) secondPlayer();
     }
 
     void firstPlayer() const {

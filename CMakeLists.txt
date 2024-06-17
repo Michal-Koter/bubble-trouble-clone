@@ -32,7 +32,6 @@ add_executable(mygame WIN32 src/main.cpp
         src/ECS/ColliderComponent.h
         src/Collision.h
         src/Collision.cpp
-        src/ECS/TileComponent.h
         src/ECS/ECS.cpp
         src/ECS/BallComponent.h
         src/ECS/SpearComponent.h
@@ -50,3 +49,5 @@ endif()
 
 # Link to the actual SDL2 library. SDL2::SDL2 is the shared SDL library, SDL2::SDL2-static is the static SDL libarary.
 target_link_libraries(mygame PRIVATE SDL2::SDL2)
+
+add_compile_definitions(FIRST_PLAYER_ID=1 SECOND_PLAYER_ID=2 TILE_SIZE=32)

@@ -7,8 +7,6 @@
 
 #include "Components.h"
 
-#define TILE_SIZE 32
-
 class LiveComponent : public Component {
 public:
     LiveComponent(int x) {

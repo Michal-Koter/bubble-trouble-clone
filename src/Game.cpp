@@ -15,8 +15,6 @@ SDL_Event Game::event;
 std::vector<ColliderComponent *> Game::colliders;
 
 Manager manager;
-//auto &background(manager.addEntity());
-//std::vector<Entity*> players;
 
 auto &player1(manager.addEntity());
 auto &spear1(manager.addEntity());
@@ -40,11 +38,6 @@ Game::Game(const char *title, int xpos, int ypos, int width, int height, bool mu
         return;
     }
     createPlayers();
-
-    if (this->multiplayer) {
-
-    }
-
 }
 
 Game::~Game() {}
@@ -88,12 +81,9 @@ void Game::handleEvents() {
     }
 }
 
-//auto& tiles(manager.getGroup(GROUP_MAP));
 auto &players(manager.getGroup(GROUP_PLAYERS));
 auto &balls(manager.getGroup(GROUP_BALLS));
-//auto& colliders(manager.getGroup(GROUP_COLLIDERS));
 auto &spears = (manager.getGroup(GROUP_SPEARS));
-//std::vector<Entity*>* collection[4] = {&tiles, &spears, &balls, &players};
 std::vector<Entity *> *collection[3] = {&spears, &balls, &players};
 
 void Game::update() {
@@ -133,7 +123,11 @@ void Game::update() {
     }
 
     // game exit if all balls are destroyed
-//    if (balls.empty()) exit(0);
+    if (balls.empty()) {
+        player1.getComponent<LiveComponent>().zeroLives();
+        if (multiplayer) player2.getComponent<LiveComponent>().zeroLives();
+        isRunning = false;
+    }
     for (auto b: balls) {
         auto oldTransform = b->getComponent<TransformComponent>();
 
@@ -174,9 +168,6 @@ void Game::clear() {
     for (auto b: balls) {
         b->destroy();
     }
-//    for(auto t: tiles) {
-//        t->destroy();
-//    }
 }
 
 void Game::destroy() {
@@ -190,15 +181,15 @@ void Game::createPlayers() const {
     player1.addComponent<SpriteComponent>("assets/player_1.bmp");
     player1.addComponent<ColliderComponent>("player1");
     player1.addComponent<LiveComponent>(32);
-    player1.addComponent<KeyboardMoveController>(1);
-    player1.addComponent<NametagComponent>(1);
+    player1.addComponent<KeyboardMoveController>(FIRST_PLAYER_ID);
+    player1.addComponent<NametagComponent>(FIRST_PLAYER_ID);
     player1.addGroup(GROUP_PLAYERS);
 
     spear1.addComponent<TransformComponent>(-20, 0, 450, 9, 1);
     spear1.addComponent<SpriteComponent>("assets/spear.bmp");
     spear1.addComponent<ColliderComponent>("spear1");
     spear1.addComponent<SpearComponent>();
-    spear1.addComponent<KeyboardSpearController>(1, player1.getComponent<TransformComponent>());
+    spear1.addComponent<KeyboardSpearController>(FIRST_PLAYER_ID, player1.getComponent<TransformComponent>());
     spear1.addGroup(GROUP_SPEARS);
 
     if (multiplayer) {
@@ -206,26 +197,18 @@ void Game::createPlayers() const {
         player2.addComponent<SpriteComponent>("assets/player_2.bmp");
         player2.addComponent<ColliderComponent>("player2");
         player2.addComponent<LiveComponent>(656);
-        player2.addComponent<KeyboardMoveController>(2);
-        player2.addComponent<NametagComponent>(2);
+        player2.addComponent<KeyboardMoveController>(SECOND_PLAYER_ID);
+        player2.addComponent<NametagComponent>(SECOND_PLAYER_ID);
         player2.addGroup(GROUP_PLAYERS);
 
         spear2.addComponent<TransformComponent>(-20, 0, 450, 9, 1);
         spear2.addComponent<SpriteComponent>("assets/spear.bmp");
         spear2.addComponent<ColliderComponent>("spear2");
         spear2.addComponent<SpearComponent>();
-        spear2.addComponent<KeyboardSpearController>(2, player2.getComponent<TransformComponent>());
+        spear2.addComponent<KeyboardSpearController>(SECOND_PLAYER_ID, player2.getComponent<TransformComponent>());
         spear2.addGroup(GROUP_SPEARS);
     }
 }
-
-//void Game::AddTile(int id, int x, int y) {
-//    auto& tile(manager.addEntity());
-//
-//    tile.addComponent<TileComponent>(x,y,32,32,id);
-//    tile.addComponent<ColliderComponent>("dirt");
-//    tile.addGroup(GROUP_MAP);
-//}
 
 int Game::getPlayerLives() {
     int min = 100;

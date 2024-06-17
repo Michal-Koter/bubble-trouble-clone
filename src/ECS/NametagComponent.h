@@ -10,10 +10,10 @@
 class NametagComponent : public Component {
 public:
     NametagComponent(int id) {
-        if (id == 1) {
-            startX = 32;
+        if (id == FIRST_PLAYER_ID) {
+            startX = TILE_SIZE;
             path = "assets/nametag_1.bmp";
-        } else if (id == 2) {
+        } else if (id == SECOND_PLAYER_ID) {
             startX = 656;
             path = "assets/nametag_2.bmp";
         }

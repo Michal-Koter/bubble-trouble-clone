@@ -11,7 +11,6 @@
 #include "KeyboardMoveController.h"
 #include "KeyboardSpearController.h"
 #include "ColliderComponent.h"
-#include "TileComponent.h"
 #include "BallComponent.h"
 #include "SpearComponent.h"
 #include "LiveComponent.h"
