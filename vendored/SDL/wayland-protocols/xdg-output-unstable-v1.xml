@@ -147,7 +147,7 @@
 	(see xdg_output_manager.get_xdg_output) and whenever the logical
 	size of the output changes, either as a result of a change in the
 	applied scale or because of a change in the corresponding output
-	mode(see wl_output.mode) or transform (see wl_output.transform).
+	mode(see wl_output.mode) or spearTransform (see wl_output.spearTransform).
       </description>
       <arg name="width" type="int"
 	   summary="width in global compositor space"/>

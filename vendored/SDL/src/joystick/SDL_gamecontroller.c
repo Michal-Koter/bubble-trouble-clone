@@ -3107,7 +3107,7 @@ void SDL_GameControllerQuitMappings(void)
 }
 
 /*
- * Event filter to transform joystick events into appropriate game controller ones
+ * Event filter to spearTransform joystick events into appropriate game controller ones
  */
 static int SDL_PrivateGameControllerAxis(SDL_GameController *gamecontroller, SDL_GameControllerAxis axis, Sint16 value)
 {
@@ -3131,7 +3131,7 @@ static int SDL_PrivateGameControllerAxis(SDL_GameController *gamecontroller, SDL
 }
 
 /*
- * Event filter to transform joystick events into appropriate game controller ones
+ * Event filter to spearTransform joystick events into appropriate game controller ones
  */
 static int SDL_PrivateGameControllerButton(SDL_GameController *gamecontroller, SDL_GameControllerButton button, Uint8 state)
 {

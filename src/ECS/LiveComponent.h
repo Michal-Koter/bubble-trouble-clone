@@ -11,17 +11,21 @@
 
 class LiveComponent : public Component {
 public:
+    LiveComponent(int x) {
+        startX = x;
+    }
+
     void init() override {
         fullHeart = TextureManager::LoadTexture(fullHeartPath);
         emptyHeart = TextureManager::LoadTexture(emptyHeartPath);
 
         srcRect = {0, 0, TILE_SIZE, TILE_SIZE};
-        destRec = {32, 640 - TILE_SIZE * 3, TILE_SIZE, TILE_SIZE};
+        destRec = {startX, 640 - TILE_SIZE * 3, TILE_SIZE, TILE_SIZE};
     }
 
     void draw() override {
         for (int i = 0; i < maxLives; ++i) {
-            destRec.x = TILE_SIZE * (i + 1) + 8 * i;
+            destRec.x = startX + (TILE_SIZE + 8) * i;
             if (i < remainingLives) {
                 TextureManager::Draw(fullHeart.get(), srcRect, destRec);
             } else {
@@ -34,6 +38,10 @@ public:
         remainingLives--;
     }
 
+    void zeroLives() {
+        remainingLives = 0;
+    }
+
     int getLives() {
         return remainingLives;
     }
@@ -41,6 +49,7 @@ public:
 private:
     int maxLives = 3;
     int remainingLives = 3;
+    int startX = 32;
 
     std::string fullHeartPath = "assets/heart.bmp";
     std::string emptyHeartPath = "assets/heart_container.bmp";

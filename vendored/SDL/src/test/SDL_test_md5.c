@@ -169,7 +169,7 @@ void SDLTest_Md5Update(SDLTest_Md5Context *mdContext, unsigned char *inBuf,
         mdContext->in[mdi++] = *inBuf++;
 
         /*
-         * transform if necessary
+         * spearTransform if necessary
          */
         if (mdi == 0x40) {
             for (i = 0, ii = 0; i < 16; i++, ii += 4) {
@@ -215,7 +215,7 @@ void SDLTest_Md5Final(SDLTest_Md5Context *mdContext)
     SDLTest_Md5Update(mdContext, MD5PADDING, padLen);
 
     /*
-     * append length in bits and transform
+     * append length in bits and spearTransform
      */
     for (i = 0, ii = 0; i < 14; i++, ii += 4) {
         in[i] = (((MD5UINT4)mdContext->in[ii + 3]) << 24) | (((MD5UINT4)mdContext->in[ii + 2]) << 16) | (((MD5UINT4)mdContext->in[ii + 1]) << 8) | ((MD5UINT4)mdContext->in[ii]);
