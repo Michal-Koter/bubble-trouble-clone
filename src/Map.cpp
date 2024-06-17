@@ -7,7 +7,6 @@
 
 Map::Map() {
     backgroundTexture = TextureManager::LoadTexture("assets/bg_v2.bmp");
-    
 }
 
 Map::~Map() {}

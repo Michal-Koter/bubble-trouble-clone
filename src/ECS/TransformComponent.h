@@ -19,7 +19,7 @@ public:
     int scale = 1;
 
     int speed = 3;
-    double dt = 1./60.;
+    double dt = 1. / 60.;
 
     TransformComponent() {
         position.Zero();
@@ -47,11 +47,11 @@ public:
     }
 
     void update() override {
-        position.x = position.x + (velocity.x * dt) + (acceleration.x*dt*dt)*0.5;
-        velocity.x = velocity.x + (acceleration.x * dt)*scale/.8;
+        position.x = position.x + (velocity.x * dt) + (acceleration.x * dt * dt) * 0.5;
+        velocity.x = velocity.x + (acceleration.x * dt) * scale / .8;
 
-        position.y = position.y + (velocity.y * dt) + (acceleration.y*dt*dt)*0.5;
-        velocity.y = velocity.y + (acceleration.y * dt)*scale/1.2;
+        position.y = position.y + (velocity.y * dt) + (acceleration.y * dt * dt) * 0.5;
+        velocity.y = velocity.y + (acceleration.y * dt) * scale / 1.2;
     }
 
     void setPosition(double x, double y) {

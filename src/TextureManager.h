@@ -10,8 +10,10 @@
 class TextureManager {
 public:
     static std::shared_ptr<SDL_Texture> LoadTexture(const std::string &fileName);
-    static void Draw(SDL_Texture* texture, SDL_Rect src, SDL_Rect dest);
-    static void Draw(SDL_Texture* texture);
+
+    static void Draw(SDL_Texture *texture, SDL_Rect src, SDL_Rect dest);
+
+    static void Draw(SDL_Texture *texture);
 };
 
 

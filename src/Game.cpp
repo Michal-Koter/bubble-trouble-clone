@@ -9,6 +9,7 @@
 #include "Group.h"
 
 #define MAX_LVL 4
+#define START_PLAYER_Y 448
 
 Map *map;
 SDL_Renderer *Game::renderer = nullptr;
@@ -27,7 +28,7 @@ auto &spear2(manager.addEntity());
 
 Game::Game(const char *title, int xpos, int ypos, int width, int height, bool multiplayer, int level) {
     this->multiplayer = multiplayer;
-    this->lvl =level;
+    this->lvl = level;
 
     if (SDL_Init(SDL_INIT_EVERYTHING) == 0) {
         window = SDL_CreateWindow(title, xpos, ypos, width, height, 0);
@@ -51,14 +52,11 @@ void Game::init() {
     map = new Map();
 
     if (!multiplayer) {
-        player1.getComponent<TransformComponent>().setPosition(384, 448);
-        spear1.getComponent<TransformComponent>().setPosition(-100, 0);
+        player1.getComponent<TransformComponent>().setPosition(384, START_PLAYER_Y);
     } else {
-        player1.getComponent<TransformComponent>().setPosition(264, 448);
-        spear1.getComponent<TransformComponent>().setPosition(-100, 0);
+        player1.getComponent<TransformComponent>().setPosition(264, START_PLAYER_Y);
 
-        player2.getComponent<TransformComponent>().setPosition(504, 448);
-        spear2.getComponent<TransformComponent>().setPosition(-100, 0);
+        player2.getComponent<TransformComponent>().setPosition(504, START_PLAYER_Y);
     }
 
     switch (lvl) {
@@ -84,23 +82,25 @@ void Game::init() {
     }
 }
 
+auto &players(manager.getGroup(GROUP_PLAYERS));
+auto &balls(manager.getGroup(GROUP_BALLS));
+auto &spears = (manager.getGroup(GROUP_SPEARS));
+std::vector<Entity *> *collection[3] = {&spears, &balls, &players};
+
 void Game::handleEvents() {
     SDL_PollEvent(&event);
     switch (event.type) {
         case SDL_QUIT:
             isRunning = false;
-            player1.getComponent<LiveComponent>().zeroLives();
-            if (multiplayer) player2.getComponent<LiveComponent>().zeroLives();
+            for (auto p: players) {
+                p->getComponent<LiveComponent>().zeroLives();
+            }
             break;
         default:
             break;
     }
 }
 
-auto &players(manager.getGroup(GROUP_PLAYERS));
-auto &balls(manager.getGroup(GROUP_BALLS));
-auto &spears = (manager.getGroup(GROUP_SPEARS));
-std::vector<Entity *> *collection[3] = {&spears, &balls, &players};
 
 void Game::update() {
     manager.refresh();
@@ -113,7 +113,6 @@ void Game::update() {
 
         for (auto b: balls) {
             if (Collision::RectBall(p->getComponent<ColliderComponent>(), b->getComponent<ColliderComponent>())) {
-                std::cout << "bal hit!" << std::endl;
                 p->getComponent<LiveComponent>().lossLive();
                 this->isRunning = false;
                 return;
@@ -138,14 +137,15 @@ void Game::update() {
         }
     }
 
-    // game exit if all balls are destroyed
     if (balls.empty()) {
         lvl++;
         if (lvl > MAX_LVL) {
-            player1.getComponent<LiveComponent>().zeroLives();
-            if (multiplayer) player2.getComponent<LiveComponent>().zeroLives();
+            for (auto p: players) {
+                p->getComponent<LiveComponent>().zeroLives();
+            }
         }
         isRunning = false;
+        return;
     }
     for (auto b: balls) {
         auto oldTransform = b->getComponent<TransformComponent>();
@@ -196,10 +196,10 @@ void Game::destroy() {
 }
 
 void Game::createPlayers() const {
-    player1.addComponent<TransformComponent>(384, 448);
+    player1.addComponent<TransformComponent>();
     player1.addComponent<SpriteComponent>("assets/player_1.bmp");
     player1.addComponent<ColliderComponent>("player1");
-    player1.addComponent<LiveComponent>(32);
+    player1.addComponent<LiveComponent>(FIRST_PLAYER_ID);
     player1.addComponent<KeyboardMoveController>(FIRST_PLAYER_ID);
     player1.addComponent<NametagComponent>(FIRST_PLAYER_ID);
     player1.addGroup(GROUP_PLAYERS);
@@ -212,10 +212,10 @@ void Game::createPlayers() const {
     spear1.addGroup(GROUP_SPEARS);
 
     if (multiplayer) {
-        player2.addComponent<TransformComponent>(384, 448);
+        player2.addComponent<TransformComponent>();
         player2.addComponent<SpriteComponent>("assets/player_2.bmp");
         player2.addComponent<ColliderComponent>("player2");
-        player2.addComponent<LiveComponent>(656);
+        player2.addComponent<LiveComponent>(SECOND_PLAYER_ID);
         player2.addComponent<KeyboardMoveController>(SECOND_PLAYER_ID);
         player2.addComponent<NametagComponent>(SECOND_PLAYER_ID);
         player2.addGroup(GROUP_PLAYERS);
@@ -231,20 +231,15 @@ void Game::createPlayers() const {
 
 void Game::createBall(int x, int y, int sc, int direction) {
     /// if direction = -1, ball start move to left
-    if (direction < 0) {
-        direction = -1;
-    } else {
-        direction = 1;
-    }
+    direction = (direction < 0) ? -1 : 1;
+
     auto &ball(manager.addEntity());
-    ball.addComponent<TransformComponent>(x, y, 24, 24, sc);
+    ball.addComponent<TransformComponent>(x, y, BALL_SIZE, BALL_SIZE, sc);
     ball.getComponent<TransformComponent>().setVelocity(55 * direction, 10);
     ball.addComponent<SpriteComponent>("assets/ball.bmp");
     ball.addComponent<ColliderComponent>("ball");
     ball.addComponent<BallComponent>();
     ball.addGroup(GROUP_BALLS);
-
-
 }
 
 int Game::getPlayerLives() {

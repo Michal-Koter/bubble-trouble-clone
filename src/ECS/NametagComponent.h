@@ -7,11 +7,13 @@
 
 #include "Components.h"
 
+#define NAMERTAG_SIZE 32
+
 class NametagComponent : public Component {
 public:
     NametagComponent(int id) {
         if (id == FIRST_PLAYER_ID) {
-            startX = TILE_SIZE;
+            startX = 32;
             path = "assets/nametag_1.bmp";
         } else if (id == SECOND_PLAYER_ID) {
             startX = 656;
@@ -22,8 +24,8 @@ public:
     void init() override {
         texture = TextureManager::LoadTexture(path);
 
-        srcRect = {0, 0, 96, 32};
-        destRec = {startX, 580, 112, 32};
+        srcRect = {0, 0, NAMERTAG_SIZE * 3, NAMERTAG_SIZE};
+        destRec = {startX, SCREEN_HEIGHT - 60, 112, NAMERTAG_SIZE};
     }
 
     void draw() override {

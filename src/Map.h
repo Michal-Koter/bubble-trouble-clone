@@ -11,9 +11,11 @@
 class Map {
 public:
     Map();
+
     ~Map();
 
     void loadMap();
+
 private:
     SDL_Rect src, dest;
     std::shared_ptr<SDL_Texture> backgroundTexture;

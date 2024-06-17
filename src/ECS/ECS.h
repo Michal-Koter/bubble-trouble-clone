@@ -128,8 +128,8 @@ public:
             auto &v(groupedEntities[i]);
             v.erase(
                     std::remove_if(std::begin(v), std::end(v),
-                                   [i](Entity *mentity) {
-                                       return !mentity->isActive() || !mentity->hasGroup(i);
+                                   [i](Entity *mEntity) {
+                                       return !mEntity->isActive() || !mEntity->hasGroup(i);
                                    }
                     ),
                     std::end(v));

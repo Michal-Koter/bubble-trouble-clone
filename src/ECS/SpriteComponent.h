@@ -9,9 +9,10 @@
 #include "SDL.h"
 #include "../TextureManager.h"
 
-class SpriteComponent : public  Component {
+class SpriteComponent : public Component {
 public:
     SpriteComponent() = default;
+
     SpriteComponent(std::string path) {
         setTexture(path);
     }

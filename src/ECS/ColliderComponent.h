@@ -14,7 +14,7 @@ public:
     SDL_Rect collider;
     std::string tag;
 
-    TransformComponent* transform;
+    TransformComponent *transform;
 
     ColliderComponent(const std::string t) {
         tag = t;

@@ -7,23 +7,29 @@
 
 #include "Components.h"
 
+#define LIVE_SIZE 32
+
 class LiveComponent : public Component {
 public:
-    LiveComponent(int x) {
-        startX = x;
+    LiveComponent(int id) {
+        if (id == FIRST_PLAYER_ID) {
+            startX = 32;
+        } else if (id == SECOND_PLAYER_ID) {
+            startX = 656;
+        }
     }
 
     void init() override {
         fullHeart = TextureManager::LoadTexture(fullHeartPath);
         emptyHeart = TextureManager::LoadTexture(emptyHeartPath);
 
-        srcRect = {0, 0, TILE_SIZE, TILE_SIZE};
-        destRec = {startX, 640 - TILE_SIZE * 3, TILE_SIZE, TILE_SIZE};
+        srcRect = {0, 0, LIVE_SIZE, LIVE_SIZE};
+        destRec = {startX, SCREEN_HEIGHT - 96, LIVE_SIZE, LIVE_SIZE};
     }
 
     void draw() override {
         for (int i = 0; i < maxLives; ++i) {
-            destRec.x = startX + (TILE_SIZE + 8) * i;
+            destRec.x = startX + 40 * i;
             if (i < remainingLives) {
                 TextureManager::Draw(fullHeart.get(), srcRect, destRec);
             } else {

@@ -5,7 +5,6 @@
 #ifndef CMAKE_INSTALL_CMAKE_SPEARCOMPONENT_H
 #define CMAKE_INSTALL_CMAKE_SPEARCOMPONENT_H
 
-
 #include "Components.h"
 
 class SpearComponent : public Component {
@@ -31,9 +30,9 @@ public:
         }
     }
 
-    void startThrow(const TransformComponent& player) const {
-        transform->position.x = player.position.x + int(player.width/2) - int(transform->width/2);
-        transform->position.y = player.position.y; // maybe add constant int?
+    void startThrow(const TransformComponent &player) const {
+        transform->position.x = player.position.x + int(player.width / 2) - int(transform->width / 2);
+        transform->position.y = player.position.y;
         transform->height = player.height;
     }
 
@@ -41,4 +40,5 @@ public:
         transform->setPosition(-10, 33);
     }
 };
+
 #endif //CMAKE_INSTALL_CMAKE_SPEARCOMPONENT_H

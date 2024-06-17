@@ -5,6 +5,8 @@
 #ifndef MYGAME_KEYBOARDCONTROLLER_H
 #define MYGAME_KEYBOARDCONTROLLER_H
 
+#define VELOCITY 70
+
 #include "../Game.h"
 #include "../Group.h"
 #include "Components.h"
@@ -28,13 +30,13 @@ public:
     }
 
     void firstPlayer() const {
-        if(Game::event.type == SDL_KEYDOWN) {
+        if (Game::event.type == SDL_KEYDOWN) {
             switch (Game::event.key.keysym.sym) {
                 case SDLK_LEFT:
-                    transform->velocity.x = -70;
+                    transform->velocity.x = -VELOCITY;
                     break;
                 case SDLK_RIGHT:
-                    transform->velocity.x = 70;
+                    transform->velocity.x = VELOCITY;
                     break;
                 case SDLK_UP:
 
@@ -58,13 +60,13 @@ public:
     }
 
     void secondPlayer() const {
-        if(Game::event.type == SDL_KEYDOWN) {
+        if (Game::event.type == SDL_KEYDOWN) {
             switch (Game::event.key.keysym.sym) {
                 case SDLK_a:
-                    transform->velocity.x = -70;
+                    transform->velocity.x = -VELOCITY;
                     break;
                 case SDLK_d:
-                    transform->velocity.x = 70;
+                    transform->velocity.x = VELOCITY;
                     break;
                 default:
                     break;
@@ -83,6 +85,7 @@ public:
             }
         }
     }
+
 private:
     int id;
 };

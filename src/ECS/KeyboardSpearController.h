@@ -12,7 +12,7 @@ public:
     TransformComponent *spearTransform;
     TransformComponent *playerTransform;
 
-    KeyboardSpearController(int id, TransformComponent& player) {
+    KeyboardSpearController(int id, TransformComponent &player) {
         this->id = id;
         playerTransform = &player;
     }
@@ -27,7 +27,7 @@ public:
     }
 
     void firstPlayer() const {
-        if(Game::event.type == SDL_KEYDOWN) {
+        if (Game::event.type == SDL_KEYDOWN) {
             switch (Game::event.key.keysym.sym) {
                 case SDLK_UP:
                     if (spearTransform->position.x < 0) {
@@ -41,7 +41,7 @@ public:
     }
 
     void secondPlayer() const {
-        if(Game::event.type == SDL_KEYDOWN) {
+        if (Game::event.type == SDL_KEYDOWN) {
             switch (Game::event.key.keysym.sym) {
                 case SDLK_w:
                     if (spearTransform->position.x < 0) {

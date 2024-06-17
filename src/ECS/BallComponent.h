@@ -8,9 +8,12 @@
 #include "Components.h"
 #include "../Group.h"
 
+#define BALL_SIZE 24
+#define ACC_BOUNCE (-8000)
+
 class BallComponent : public Component {
 public:
-    TransformComponent* transform{};
+    TransformComponent *transform{};
 
     BallComponent() = default;
 
@@ -21,49 +24,44 @@ public:
         transform = &entity->getComponent<TransformComponent>();
     }
 
-    void wallBounce(const TransformComponent& oldTransform) const {
+    void wallBounce(const TransformComponent &oldTransform) const {
         transform->setPosition(oldTransform.position.x, oldTransform.position.y);
         transform->setVelocity(-oldTransform.velocity.x, oldTransform.velocity.y);
         transform->setAcceleration(-oldTransform.acceleration.x, oldTransform.acceleration.y);
     }
 
-    void floorBounce(const TransformComponent& oldTransform) const {
+    void floorBounce(const TransformComponent &oldTransform) const {
         transform->setPosition(oldTransform.position.x, oldTransform.position.y);
         transform->setVelocity(oldTransform.velocity.x, 0.);
-        transform->setAcceleration(0., -8000);
+        transform->setAcceleration(0., ACC_BOUNCE);
     }
 
     void inAir() const {
         transform->setAcceleration(0., 100);
     }
 
-    void split(Manager& manager) {
-        auto& leftBall(manager.addEntity());
-        auto& rightBall(manager.addEntity());
-
+    void split(Manager &manager) {
         if (transform->scale > 1) {
-            leftBall.addComponent<TransformComponent>(transform->position.x - 5*transform->scale, transform->position.y, 24, 24,
-                                                      transform->scale - 1);
-            leftBall.getComponent<TransformComponent>().setVelocity(-transform->velocity.x, 0);
-            leftBall.getComponent<TransformComponent>().setAcceleration(transform->acceleration.x,
-                                                                        transform->acceleration.y - 8000);
-            leftBall.addComponent<SpriteComponent>("assets/ball.bmp");
-            leftBall.addComponent<ColliderComponent>("ball");
-            leftBall.addComponent<BallComponent>();
-            leftBall.addGroup(GROUP_BALLS);
-
-            rightBall.addComponent<TransformComponent>(transform->position.x + 5*transform->scale, transform->position.y, 24, 24,
-                                                       transform->scale - 1);
-            rightBall.getComponent<TransformComponent>().setVelocity(transform->velocity.x, 0);
-            rightBall.getComponent<TransformComponent>().setAcceleration(transform->acceleration.x,
-                                                                         transform->acceleration.y - 8000);
-            rightBall.addComponent<SpriteComponent>("assets/ball.bmp");
-            rightBall.addComponent<ColliderComponent>("ball");
-            rightBall.addComponent<BallComponent>();
-            rightBall.addGroup(GROUP_BALLS);
+            createBall(manager, false);
+            createBall(manager, true);
         }
-
         entity->destroy();
+    }
+
+    void createBall(Manager &manager, bool direction) {
+        int dir = (direction) ? 1 : -1;
+
+        auto &newBall(manager.addEntity());
+        newBall.addComponent<TransformComponent>(transform->position.x + 5 * transform->scale * dir,
+                                                 transform->position.y, BALL_SIZE, BALL_SIZE,
+                                                 transform->scale - 1);
+        newBall.getComponent<TransformComponent>().setVelocity(transform->velocity.x * dir, 0);
+        newBall.getComponent<TransformComponent>().setAcceleration(transform->acceleration.x,
+                                                                   transform->acceleration.y + ACC_BOUNCE);
+        newBall.addComponent<SpriteComponent>("assets/ball.bmp");
+        newBall.addComponent<ColliderComponent>("ball");
+        newBall.addComponent<BallComponent>();
+        newBall.addGroup(GROUP_BALLS);
     }
 
 };

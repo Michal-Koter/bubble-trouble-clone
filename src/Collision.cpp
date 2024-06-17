@@ -6,6 +6,8 @@
 #include "ECS\ColliderComponent.h"
 #include <cmath>
 
+#define SINGLE_FRAME 32
+
 bool Collision::AABB(const SDL_Rect &rectA, const SDL_Rect &rectB) {
     return (rectA.x + rectA.w >= rectB.x &&
             rectB.x + rectB.w >= rectA.x &&
@@ -23,17 +25,17 @@ bool Collision::FrameCollision(const ColliderComponent &col) {
 
 bool Collision::XFrameCollision(const ColliderComponent &col) {
     auto rect = col.collider;
-    return (rect.x < 32 || rect.x + rect.w > 768);
+    return (rect.x < SINGLE_FRAME || rect.x + rect.w > SCREEN_WIDTH - SINGLE_FRAME);
 }
 
 bool Collision::Flor(const ColliderComponent &col) {
     auto rect = col.collider;
-    return (rect.y + rect.h > 512);
+    return (rect.y + rect.h > SCREEN_HEIGHT - SINGLE_FRAME * 4);
 }
 
 bool Collision::Ceiling(const ColliderComponent &col) {
     auto rect = col.collider;
-    return (rect.y < 32);
+    return (rect.y < SINGLE_FRAME);
 }
 
 bool Collision::RectBall(const ColliderComponent &rect, const ColliderComponent &ball) {

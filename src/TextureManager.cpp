@@ -12,7 +12,7 @@ std::shared_ptr<SDL_Texture> TextureManager::LoadTexture(const std::string &file
         SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Couldn't create surface from image: %s", SDL_GetError());
         throw std::invalid_argument(SDL_GetError());
     }
-    SDL_SetColorKey(surface, SDL_TRUE, SDL_MapRGB(surface->format,255, 0, 255));
+    SDL_SetColorKey(surface, SDL_TRUE, SDL_MapRGB(surface->format, 255, 0, 255));
     texture = SDL_CreateTextureFromSurface(Game::renderer, surface);
     if (!texture) {
         SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Couldn't create texture from surface: %s", SDL_GetError());
@@ -24,10 +24,10 @@ std::shared_ptr<SDL_Texture> TextureManager::LoadTexture(const std::string &file
     }};
 }
 
-void TextureManager::Draw(SDL_Texture* texture, SDL_Rect src, SDL_Rect dest) {
+void TextureManager::Draw(SDL_Texture *texture, SDL_Rect src, SDL_Rect dest) {
     SDL_RenderCopy(Game::renderer, texture, &src, &dest);
 }
 
-void TextureManager::Draw(SDL_Texture* texture) {
+void TextureManager::Draw(SDL_Texture *texture) {
     SDL_RenderCopy(Game::renderer, texture, NULL, NULL);
 }

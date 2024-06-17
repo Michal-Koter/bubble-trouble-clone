@@ -16,7 +16,7 @@ int main(int argc, char *argv[]) {
     Uint32 frameStart;
     int frameTime;
 
-    game = new Game("My game", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 640, multiplayer, level);
+    game = new Game("My game", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT, multiplayer, level);
 
     while (Game::getPlayerLives() > 0) {
         game->init();
