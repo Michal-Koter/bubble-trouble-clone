@@ -15,5 +15,6 @@
 #include "BallComponent.h"
 #include "SpearComponent.h"
 #include "LiveComponent.h"
+#include "NametagComponent.h"
 
 #endif //MYGAME_COMPONENTS_H

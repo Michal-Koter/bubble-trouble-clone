@@ -191,6 +191,7 @@ void Game::createPlayers() const {
     player1.addComponent<ColliderComponent>("player1");
     player1.addComponent<LiveComponent>(32);
     player1.addComponent<KeyboardMoveController>(1);
+    player1.addComponent<NametagComponent>(1);
     player1.addGroup(GROUP_PLAYERS);
 
     spear1.addComponent<TransformComponent>(-20, 0, 450, 9, 1);
@@ -206,6 +207,7 @@ void Game::createPlayers() const {
         player2.addComponent<ColliderComponent>("player2");
         player2.addComponent<LiveComponent>(656);
         player2.addComponent<KeyboardMoveController>(2);
+        player2.addComponent<NametagComponent>(2);
         player2.addGroup(GROUP_PLAYERS);
 
         spear2.addComponent<TransformComponent>(-20, 0, 450, 9, 1);

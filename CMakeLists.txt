@@ -39,6 +39,7 @@ add_executable(mygame WIN32 src/main.cpp
         src/Group.h
         src/ECS/LiveComponent.h
         src/ECS/KeyboardSpearController.h
+        src/ECS/NametagComponent.h
 )
 
 # SDL2::SDL2main may or may not be available. It is e.g. required by Windows GUI applications
